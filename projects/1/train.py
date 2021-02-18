@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from joblib import dump
 
 
-from model import model, fields
+from model import model, fields, categorical_to_transform, numeric_features
 
 
 
@@ -35,9 +35,11 @@ with open(train_path, 'r') as f:
 data_table = io.StringIO(data)
 df = pd.read_csv(data_table,sep='\t',names=fields, index_col=False)
 
+categorical_to_transform = ['cf6', 'cf9', 'cf13', 'cf16', 'cf17', 'cf19', 'cf25', 'cf26']
+
 
 X_train, X_test, y_train, y_test = train_test_split(
-    df.iloc[:,:-1], df.iloc[:,-1], test_size=0.33, random_state=42
+    df[numeric_features+categorical_to_transform], df.iloc[:,1], test_size=0.33, random_state=42
 )
 
 #
