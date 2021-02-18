@@ -1,3 +1,3 @@
 #!/bin/bash
 
-train.py $@
+projects/1/train.py $@
