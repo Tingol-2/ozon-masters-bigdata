@@ -11,7 +11,9 @@ categorical_features = ["cf"+str(i) for i in range(1,27)] + ["day_number"]
 
 fields = ["id", "label"] + numeric_features + categorical_features
 
-categorical_to_transform = ['cf6', 'cf9', 'cf13', 'cf16', 'cf17', 'cf19', 'cf25', 'cf26']   #cf8,cf18 
+#categorical_to_transform = ['cf6', 'cf9', 'cf13', 'cf16', 'cf17', 'cf19', 'cf25', 'cf26']   #cf8,cf18 
+
+categorical_to_transform = ['cf6', 'cf19']   #cf8,cf18 
 
 numeric_transformer = Pipeline(steps=[
     ('imputer', SimpleImputer(strategy='median')),
