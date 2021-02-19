@@ -29,6 +29,6 @@ read_opts=dict(
 )
 
 for df in pd.read_csv(sys.stdin, **read_opts):
-    pred = model.predict(df[numeric_features+categorical_to_transform])
+    pred = model.predict(df[numeric_features])
     out = zip(df.doc_id, pred)
     print("\n".join(["{0},{1}".format(*i) for i in out]))
