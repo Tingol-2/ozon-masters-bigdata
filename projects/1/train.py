@@ -37,7 +37,7 @@ df = pd.read_csv(data_table,sep='\t',names=fields, index_col=False)
 
 
 X_train, X_test, y_train, y_test = train_test_split(
-    df[numeric_features+categorical_to_transform], df['label'], test_size=0.33, random_state=42
+    df[numeric_features], df['label'], test_size=0.33, random_state=42
 )
 
 #
