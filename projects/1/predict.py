@@ -6,7 +6,7 @@ from joblib import load
 import pandas as pd
 
 sys.path.append('.')
-from model import fields, numeric_features, categorical_to_transform
+from model import numeric_features, categorical_features
 
 #
 # Init the logger
@@ -19,16 +19,15 @@ logging.info("ARGS {}".format(sys.argv[1:]))
 #load the model
 model = load("1.joblib")
 
-#fields = """doc_id,hotel_name,hotel_url,street,city,state,country,zip,class,price,
-#num_reviews,CLEANLINESS,ROOM,SERVICE,LOCATION,VALUE,COMFORT,overall_ratingsource""".replace("\n",'').split(",")
 
 #read and infere
 read_opts=dict(
-        sep='\t', names=fields.remove('label'), index_col=False, header=None,
-        iterator=True, chunksize=500
+        sep='\t', names=["id"] + numeric_features + categorical_features, index_col=False, header=None,
+        iterator=True, chunksize=200
 )
 
 for df in pd.read_csv(sys.stdin, **read_opts):
-    pred = model.predict(df[numeric_features])
-    out = zip(df.doc_id, pred)
+    pred = model.predict_proba(df.iloc[:, 1:])
+    out = zip(df.id, pred[:, 1])
     print("\n".join(["{0},{1}".format(*i) for i in out]))
+logging.info("done!")
