@@ -1,17 +1,21 @@
 #!/opt/conda/envs/dsenv/bin/python
 
-import os, sys, io
+import os, sys
 import logging
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from joblib import dump
 
+#
+# Import model definition
+#
+from model import model, fields
 
-from model import model, fields, categorical_to_transform, numeric_features
 
-
-
+#
+# Logging initialization
+#
 logging.basicConfig(level=logging.DEBUG)
 logging.info("CURRENT_DIR {}".format(os.getcwd()))
 logging.info("SCRIPT CALLED AS {}".format(sys.argv[0]))
@@ -29,20 +33,20 @@ except:
 logging.info(f"TRAIN_ID {proj_id}")
 logging.info(f"TRAIN_PATH {train_path}")
 
-with open(train_path, 'r') as f:
-    data = f.read()
-    
-data_table = io.StringIO(data)
-df = pd.read_csv(data_table,sep='\t',names=fields, index_col=False)
+
+read_table_opts = dict(sep="\t", names=fields, index_col=False)
+df = pd.read_table(train_path, **read_table_opts)
+
+df_x, df_y = df.iloc[:, 2:], df.iloc[:, 1]
 
 
 X_train, X_test, y_train, y_test = train_test_split(
-    df[numeric_features+categorical_to_transform], df['label'], test_size=0.33, random_state=42
+    df_x, df_y, test_size=0.33, random_state=42
 )
-
 #
 # Train the model
 #
+
 model.fit(X_train, y_train)
 
 model_score = model.score(X_test, y_test)
@@ -50,4 +54,6 @@ model_score = model.score(X_test, y_test)
 logging.info(f"model score: {model_score:.3f}")
 
 # save the model
+logging.info("model fitted!")
 dump(model, "{}.joblib".format(proj_id))
+logging.info("done!")
