@@ -22,7 +22,8 @@ model = load("1.joblib")
 
 #read and infere
 
-read_opts=dict(names=["id"] + numeric_features + categorical_features, index_col=False, header=None,
+read_opts=dict(
+        sep='\t', names=["id"] + numeric_features + categorical_features, index_col=False, header=None,
         iterator=True, chunksize=200
 )
 
