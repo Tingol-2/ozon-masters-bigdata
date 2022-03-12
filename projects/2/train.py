@@ -63,5 +63,5 @@ logging.info(f"model score: {model_score:.3f}")
 
 # save the model
 logging.info("model fitted!")
-dump(model, "{}.joblib".format(proj_id))
+dump(model, "2.joblib")
 logging.info("Done")
