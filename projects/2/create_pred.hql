@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS hw2_pred (
-  id    string,
+  id    int,
 	pred  double
 )
 ROW FORMAT DELIMITED
