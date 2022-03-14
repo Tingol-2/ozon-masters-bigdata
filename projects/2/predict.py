@@ -6,6 +6,8 @@ from joblib import load
 import pandas as pd
 
 sys.path.append('.')
+sys.path.append('projects/2')
+sys.path.append('../..')
 
 from model import numeric_features, categorical_features
 
