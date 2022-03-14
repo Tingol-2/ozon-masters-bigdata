@@ -6,8 +6,6 @@ from joblib import load
 import pandas as pd
 
 sys.path.append('.')
-sys.path.append('projects/2')
-sys.path.append('../..')
 
 from model import numeric_features, categorical_features
 
@@ -44,12 +42,4 @@ for df in pd.read_csv(sys.stdin, **read_opts):
     pred = model.predict_proba(df.iloc[:, 1:])
     out = zip(df.id, pred[:, 1])
     print("\n".join(["{0}\t{1}".format(*i) for i in out]))
-logging.info("... completed")o("Predict data ...")
-logging.info(numeric_features    )
-logging.info(categorical_features)
-
-for df in pd.read_csv(sys.stdin, **read_opts):
-    pred = model.predict_proba(df.iloc[:, 1:])
-    out = zip(df.id, pred[:, 1])
-    print("\n".join(["{0}\t{1}".format(*i) for i in out]))
-logging.info("Done")
+logging.info("... completed")
