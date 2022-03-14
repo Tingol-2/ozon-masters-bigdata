@@ -42,7 +42,7 @@ CREATE TEMPORARY EXTERNAL TABLE hw2_test (
         cf25  string,
         cf26  string,
 	
-	day_number int
+	day_number string
 )
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
