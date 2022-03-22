@@ -43,7 +43,7 @@ def bfs(current, target, parents, level, max_level):
     ret_val = list()
     for parent in parents[current]:
         temp_val = []
-        for prev in get_parents(parent,target, parents, level+1, max_level):
+        for prev in bfs(parent,target, parents, level+1, max_level):
             temp_val.append(current)
             temp_val.extend(prev)
         if (len(temp_val) != 0):
@@ -52,14 +52,14 @@ def bfs(current, target, parents, level, max_level):
 
 out = bfs(end_node, start_node, parent_s, 0, path_length)
 
-answer = list()
+result = list()
 for st in out:
     path = list(st)
     path.reverse()
-    answer.append(','.join(map(lambda x :str(x), path)))
+    result.append(','.join(map(lambda x :str(x), path)))
 
-ready_answer = "\n".join(answer)
-answer_rdd = sc.parallelize([ready_answer])
-answer_rdd.saveAsTextFile(output_file)
+final_result = "\n".join(result)
+result_rdd = sc.parallelize([final_result])
+result_rdd.saveAsTextFile(output_file)
 
 sc.stop()
