@@ -35,7 +35,7 @@ for i in range(n_iter):
         queue_s.update(val[1])
 path_length = i
 
-def get_parents(current, target, parents, level, max_level):
+def bfs(current, target, parents, level, max_level):
     if level >= max_level:
         return []
     if current == target:
@@ -50,7 +50,7 @@ def get_parents(current, target, parents, level, max_level):
             ret_val.append(temp_val)
     return ret_val
 
-out = get_parents(end_node, start_node, parent_s, 0, path_length)
+out = bfs(end_node, start_node, parent_s, 0, path_length)
 
 answer = list()
 for st in out:
