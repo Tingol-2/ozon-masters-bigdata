@@ -14,7 +14,7 @@ input_file  = sys.argv[3]
 output_file = sys.argv[4]
 
 graph = sc.textFile(input_file)
-graph_data = graph.map(lambda x : x.split("\t")).map(lambda x : (int(x[1]), int(x[0]))).cache()
+graph_new = graph.map(lambda x : x.split("\t")).map(lambda x : (int(x[1]), int(x[0]))).cache()
 
 n_iter = 800
 queue_s, visited_s = set(), set()
@@ -25,7 +25,7 @@ for i in range(n_iter):
     queue_sc, visited_sc = sc.broadcast(queue_s), sc.broadcast(visited_s)
     if (end_node in visited_s):
         break
-    output = graph_data.filter(lambda x : (x[0] in queue_sc.value) and (x[0] not in visited_sc.value)).groupByKey().mapValues(list).collect()
+    output = graph_new.filter(lambda x : (x[0] in queue_sc.value) and (x[0] not in visited_sc.value)).groupByKey().mapValues(list).collect()
     
     visited_s.update(queue_s)
     queue_s = set()
