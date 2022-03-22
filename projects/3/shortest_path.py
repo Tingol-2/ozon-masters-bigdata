@@ -13,10 +13,10 @@ end_node   = int(sys.argv[2])
 input_file  = sys.argv[3]
 output_file = sys.argv[4]
 
-raw_graph = sc.textFile(input_file)
-graph_data = raw_graph.map(lambda x : x.split("\t")).map(lambda x : (int(x[1]), int(x[0]))).cache()
+graph = sc.textFile(input_file)
+graph_data = graph.map(lambda x : x.split("\t")).map(lambda x : (int(x[1]), int(x[0]))).cache()
 
-n_iter = 1000
+n_iter = 800
 queue_s, visited_s = set(), set()
 
 queue_s.add(start_node)
@@ -53,8 +53,8 @@ def get_parents(current, target, parents, level, max_level):
 out = get_parents(end_node, start_node, parent_s, 0, path_length)
 
 answer = list()
-for v in out:
-    path = list(v)
+for st in out:
+    path = list(st)
     path.reverse()
     answer.append(','.join(map(lambda x :str(x), path)))
 
