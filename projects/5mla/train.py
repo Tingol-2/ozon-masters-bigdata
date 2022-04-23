@@ -69,9 +69,7 @@ def main():
     mlflow.sklearn.autolog()
     with mlflow.start_run():
         model.set_params(logisticregression__max_iter=args.model_param1)
-        logging.info("all parameters are set")
         model.fit(X_train, y_train)
-        logging.info("fitted")
 
 
 if __name__ == "__main__":
