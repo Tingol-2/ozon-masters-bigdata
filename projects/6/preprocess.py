@@ -2,9 +2,20 @@
 import os, sys
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
+from pyspark import SparkConf
 
-spark = SparkSession.builder.getOrCreate()
-spark.sparkContext.setLogLevel('WARN')
+SPARK_HOME = "/usr/hdp/current/spark2-client"
+PYSPARK_PYTHON = "/opt/conda/envs/dsenv/bin/python"
+os.environ["PYSPARK_PYTHON"]= PYSPARK_PYTHON
+os.environ["SPARK_HOME"] = SPARK_HOME
+
+PYSPARK_HOME = os.path.join(SPARK_HOME, "python/lib")
+sys.path.insert(0, os.path.join(PYSPARK_HOME, "py4j-0.10.9.3-src.zip"))
+sys.path.insert(0, os.path.join(PYSPARK_HOME, "pyspark.zip"))
+
+conf = SparkConf()
+spark = SparkSession.builder.config(conf=conf).appName("Spark SQL").getOrCreate()
+
 
 path_dataset = sys.argv[1]
 path_out = sys.argv[2]
