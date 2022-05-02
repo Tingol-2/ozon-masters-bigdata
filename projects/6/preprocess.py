@@ -58,3 +58,5 @@ x = hasher.transform(x)
 x = vas.transform(x)
 
 x.write().overwrite().save(path_out)
+
+spark.stop()
