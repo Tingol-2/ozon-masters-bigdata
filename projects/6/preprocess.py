@@ -16,47 +16,50 @@ sys.path.insert(0, os.path.join(PYSPARK_HOME, "pyspark.zip"))
 conf = SparkConf()
 spark = SparkSession.builder.config(conf=conf).appName("Spark SQL").getOrCreate()
 
+def main():
+    path_dataset = sys.argv[1]
+    path_out = sys.argv[2]
 
-path_dataset = sys.argv[1]
-path_out = sys.argv[2]
+    schema = StructType([
+        StructField("label", DoubleType()),
+        StructField("vote", StringType()),
+        StructField("verified", BooleanType()),
+        StructField("reviewTime", StringType()),
+        StructField("reviewerID", StringType()),
+        StructField("asin", StringType()),
+        StructField("id", StringType()),
+        StructField("reviewerName", StringType()),
+        StructField("reviewText", StringType()),
+        StructField("summary", StringType()),
+        StructField("unixReviewTime", TimestampType())
+    ])
 
-schema = StructType([
-    StructField("label", DoubleType()),
-    StructField("vote", StringType()),
-    StructField("verified", BooleanType()),
-    StructField("reviewTime", StringType()),
-    StructField("reviewerID", StringType()),
-    StructField("asin", StringType()),
-    StructField("id", StringType()),
-    StructField("reviewerName", StringType()),
-    StructField("reviewText", StringType()),
-    StructField("summary", StringType()),
-    StructField("unixReviewTime", TimestampType())
-])
+    dataset = spark.read.json(path_dataset, schema=schema)
 
-dataset = spark.read.json(path_dataset, schema=schema)
+    dataset = dataset.fillna({'summary':''})
 
-dataset = dataset.fillna({'summary':''})
-
-tokenizer = RegexTokenizer(inputCol="reviewText", outputCol="words", pattern="\\W")
-
-
-stop_words = StopWordsRemover.loadDefaultStopWords("english")
-
-swr = StopWordsRemover(inputCol=tokenizer.getOutputCol(),
-                          outputCol="words_filtered", stopWords=stop_words)
+    tokenizer = RegexTokenizer(inputCol="reviewText", outputCol="words", pattern="\\W")
 
 
-hasher = HashingTF(numFeatures=100, binary=True,
-                    inputCol=swr.getOutputCol(), outputCol="word_vec")
+    stop_words = StopWordsRemover.loadDefaultStopWords("english")
 
-vas = VectorAssembler(inputCols=['word_vec'], outputCol="features")
+    swr = StopWordsRemover(inputCol=tokenizer.getOutputCol(),
+                              outputCol="words_filtered", stopWords=stop_words)
 
-x = tokenizer.transform(dataset)
-x = swr.transform(x)
-x = hasher.transform(x)
-x = vas.transform(x)
 
-x.write().overwrite().save(path_out)
+    hasher = HashingTF(numFeatures=100, binary=True,
+                        inputCol=swr.getOutputCol(), outputCol="word_vec")
 
+    vas = VectorAssembler(inputCols=['word_vec'], outputCol="features")
+
+    x = tokenizer.transform(dataset)
+    x = swr.transform(x)
+    x = hasher.transform(x)
+    x = vas.transform(x)
+
+    x.write().overwrite().save(path_out)
+
+if __name__ == "__main__":
+    main()
+    
 spark.stop()
