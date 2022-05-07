@@ -22,8 +22,8 @@ import pandas as pd
 from joblib import dump
 
 def main():
-            path_in = sys.argv[1] 
-            path_out = sys.argv[2] 
+            path_in = sys.argv[2] 
+            path_out = sys.argv[4] 
 
             dataset = spark.read.json(path_in)
 
