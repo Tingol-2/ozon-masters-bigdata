@@ -21,21 +21,25 @@ from pyspark.ml.functions import vector_to_array
 import pandas as pd
 from joblib import dump
 
-path_in = sys.argv[1] 
-path_out = sys.argv[2] 
+def main():
+            path_in = sys.argv[1] 
+            path_out = sys.argv[2] 
 
-dataset = spark.read.json(path_in)
+            dataset = spark.read.json(path_in)
 
-features = (dataset.withColumn("f", vector_to_array("features"))
-            .select(['id'] + [col("f")[i] for i in range(100)])).toPandas()
+            features = (dataset.withColumn("f", vector_to_array("features"))
+                        .select(['id'] + [col("f")[i] for i in range(100)])).toPandas()
 
-target = dataset.select('label').toPandas()
+            target = dataset.select('label').toPandas()
 
-feats = list(features.columns)[1:]
+            feats = list(features.columns)[1:]
 
-model = GradientBoostingClassifier()
-model.fit(features[feats], target['label'])
+            model = GradientBoostingClassifier()
+            model.fit(features[feats], target['label'])
 
-dump(model, path_out)
+            dump(model, path_out)
+
+if __name__ == "__main__":
+    main()
 
 spark.stop()
