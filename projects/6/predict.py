@@ -24,9 +24,9 @@ spark = SparkSession.builder.config(conf=conf).appName("Spark SQL").getOrCreate(
 import pandas as pd
 from joblib import load
 
-path_in = sys.argv[1] 
-path_out = sys.argv[2] 
-model_path = sys.argv[3] 
+path_in = sys.argv[2] 
+path_out = sys.argv[4] 
+model_path = sys.argv[6] 
 
 model = load(model_path)
 
