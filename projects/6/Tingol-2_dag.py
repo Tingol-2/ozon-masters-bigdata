@@ -8,6 +8,9 @@ from airflow.operators.bash import BashOperator
 from airflow.operators.latest_only import LatestOnlyOperator
 from airflow.utils.trigger_rule import TriggerRule
 
+
+base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
+
 with DAG(
     dag_id='Classification',
     schedule_interval=None,
@@ -15,5 +18,5 @@ with DAG(
     catchup=False,
     #tags=['example3'],
 ) as dag:
+    
 
-base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
