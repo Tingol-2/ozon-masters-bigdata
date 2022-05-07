@@ -6,6 +6,7 @@ from pyspark import SparkConf
 from pyspark.sq.functions 
 import pyspark.sql.functions as F
 from pyspark.ml.functions import vector_to_array
+from pyspark.sql.types import StructType, StructField, DoubleType, StringType, BooleanType, TimestampType, FloatType
 
 SPARK_HOME = "/usr/hdp/current/spark2-client"
 PYSPARK_PYTHON = "/opt/conda/envs/dsenv/bin/python"
