@@ -4,6 +4,12 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark import SparkConf
 
+from pyspark.ml.feature import *
+from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.regression import GBTRegressor
+from pyspark.ml import Pipeline
+
+
 SPARK_HOME = "/usr/hdp/current/spark2-client"
 PYSPARK_PYTHON = "/opt/conda/envs/dsenv/bin/python"
 os.environ["PYSPARK_PYTHON"]= PYSPARK_PYTHON
