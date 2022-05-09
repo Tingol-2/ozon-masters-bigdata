@@ -1,4 +1,4 @@
-#!/opt/conda/envs/dsenv/bin/python
+
 import os, sys
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
