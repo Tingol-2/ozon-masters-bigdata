@@ -60,3 +60,4 @@ with DAG(
     ) 
     
 
+feature_eng_task >>  train_download_task >> train_task >> model_sensor >> feature_eng_task >> predict_task
