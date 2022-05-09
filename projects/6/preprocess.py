@@ -63,7 +63,7 @@ def main():
     x = hasher.transform(x)
     x = vas.transform(x)
 
-    x.write.overwrite.json(path_out)
+    x.write.mode('overwrite').json(path_out)
 
 if __name__ == "__main__":
     main()
