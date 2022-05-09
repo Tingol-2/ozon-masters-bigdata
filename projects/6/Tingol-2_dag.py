@@ -40,9 +40,9 @@ with DAG(
     
     model_sensor = FileSensor( task_id= "model_sensor", filepath= f'{base_dir}6.joblib' )
     
-    feature_eng_task = SparkSubmitOperator(
+    feature_eng_task_test = SparkSubmitOperator(
         application=f"{base_dir}preprocess.py"\
-        , task_id="feature_eng_task"\
+        , task_id="feature_eng_task_test"\
         , application_args = ['--path-in', '/datasets/amazon/all_reviews_5_core_test_extra_small_features.json', '--path-out', 'Tingol-2_test_out']\
         ,spark_binary="/usr/bin/spark-submit"\
         ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
@@ -57,4 +57,4 @@ with DAG(
     ) 
     
 
-feature_eng_task >>  train_download_task >> train_task >> model_sensor >> feature_eng_task >> predict_task
+feature_eng_task >>  train_download_task >> train_task >> model_sensor >> feature_eng_task_test >> predict_task
