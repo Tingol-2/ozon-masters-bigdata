@@ -7,7 +7,7 @@ from airflow.operators.bash import BashOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.sensors.filesystem import FileSensor
 
-base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
+
 
 with DAG(
     dag_id='Tingol-2_dag',
@@ -16,6 +16,8 @@ with DAG(
     catchup=False,
     #tags=['example3'],
 ) as dag:
+    base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
+    
     feature_eng_task = SparkSubmitOperator(
         application=f"{base_dir}preprocess.py"\
         , task_id="feature_eng_task"\
