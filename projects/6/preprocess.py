@@ -24,7 +24,9 @@ spark = SparkSession.builder.config(conf=conf).appName("Spark SQL").getOrCreate(
 
 def main():
     path_dataset = sys.argv[2]
+    print(path_dataset)
     path_out = sys.argv[4]
+    print(path_out)
 
     schema = StructType([
         StructField("label", DoubleType()),
