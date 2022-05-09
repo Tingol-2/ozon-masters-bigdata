@@ -5,14 +5,14 @@ import pendulum
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-from airflow.contrib.sensors.file_sensor import FileSensor
+from airflow.sensors.filesystem import FileSensor
 
 base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
 
 with DAG(
     dag_id='Tingol-2_dag',
     schedule_interval=None,
-    #start_date=pendulum.datetime(2022, 5, 7, tz="UTC"),
+    start_date=pendulum.datetime(2022, 5, 8, tz="UTC"),
     catchup=False,
     #tags=['example3'],
 ) as dag:
@@ -38,7 +38,7 @@ with DAG(
         ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
     )
     
-    model_sensor = FileSensor( task_id= "model_sensor", poke_interval= 30,  filepath= f'{base_dir}6.joblib' )
+    model_sensor = FileSensor( task_id= "model_sensor", poke= 30,  filepath= f'{base_dir}6.joblib' )
     
     feature_eng_task = SparkSubmitOperator(
         application=f"{base_dir}preprocess.py"\
