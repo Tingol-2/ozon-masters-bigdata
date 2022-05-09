@@ -3,10 +3,7 @@ import datetime
 import pendulum
 
 from airflow import DAG
-from airflow.operators.empty import EmptyOperator
 from airflow.operators.bash import BashOperator
-from airflow.operators.latest_only import LatestOnlyOperator
-from airflow.utils.trigger_rule import TriggerRule
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.contrib.sensors.file_sensor import FileSensor
 
