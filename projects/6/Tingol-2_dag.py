@@ -36,7 +36,7 @@ with DAG(
     train_task = SparkSubmitOperator(
         application=f"{base_dir}train.py"\
         , task_id="train_task"\
-        , application_args = ['--train-in', '{base_dir}Tingol-2_train_out_local', '--sklearn-model-out', f'{base_dir}6.joblib']\
+        , application_args = ['--train-in', f'{base_dir}Tingol-2_train_out_local', '--sklearn-model-out', f'{base_dir}6.joblib']\
         ,spark_binary="/usr/bin/spark-submit"\
         ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
     )
