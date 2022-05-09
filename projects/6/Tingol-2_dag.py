@@ -13,7 +13,7 @@ from airflow.contrib.sensors.file_sensor import FileSensor
 base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
 
 with DAG(
-    dag_id='Classification',
+    dag_id='Tingol-2_dag',
     schedule_interval=None,
     #start_date=pendulum.datetime(2022, 5, 7, tz="UTC"),
     catchup=False,
