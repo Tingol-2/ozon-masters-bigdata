@@ -19,8 +19,8 @@ with DAG(
     base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
     
     feature_eng_task = SparkSubmitOperator(
-        #application=f"{base_dir}preprocess.py"\
-        application="~/ozon-masters-bigdata/projects/6/preprocess.py"\
+        application=f"{base_dir}preprocess.py"\
+        #application="~/ozon-masters-bigdata/projects/6/preprocess.py"\
         , task_id="feature_eng_task"\
         , application_args = ['--path-in', '/datasets/amazon/all_reviews_5_core_train_extra_small_sentiment.json', '--path-out', 'Tingol-2_train_out']\
         ,spark_binary="/usr/bin/spark-submit"\
