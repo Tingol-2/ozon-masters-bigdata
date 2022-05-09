@@ -38,7 +38,7 @@ with DAG(
         ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
     )
     
-    model_sensor = FileSensor( task_id= "model_sensor", poke= 30,  filepath= f'{base_dir}6.joblib' )
+    model_sensor = FileSensor( task_id= "model_sensor", filepath= f'{base_dir}6.joblib' )
     
     feature_eng_task = SparkSubmitOperator(
         application=f"{base_dir}preprocess.py"\
