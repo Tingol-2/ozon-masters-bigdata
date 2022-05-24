@@ -6,22 +6,29 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.sensors.filesystem import FileSensor
+from airflow.utils.dates import days_ago
+import os
 
 
 
+default_args = {
+    'start_date': days_ago(0),
+    'depends_on_past': False,
+}
+
+base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
+#path = os.path.join(args.path_out, output_path)
 with DAG(
-    dag_id='Tingol-2_dag',
+    'Tingol-2_dag',
+    default_args=default_args,
     schedule_interval=None,
-    start_date=pendulum.datetime(2022, 5, 8, tz="UTC"),
-    catchup=False,
-    #tags=['example3'],
-) as dag:
-    base_dir = '{{ dag_run.conf["base_dir"] if dag_run else "" }}'
+    catchup=False
+    ) as dag:
     
     feature_eng_task = SparkSubmitOperator(
         application=f"{base_dir}preprocess.py"\
         #application="~/ozon-masters-bigdata/projects/6/preprocess.py"\
-        , task_id="feature_eng_task"\
+        , task_id="feature_eng_train_task"\
         , application_args = ['--path-in', '/datasets/amazon/all_reviews_5_core_train_extra_small_sentiment.json', '--path-out', 'Tingol-2_train_out']\
         ,spark_binary="/usr/bin/spark-submit"\
         ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
