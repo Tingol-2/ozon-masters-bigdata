@@ -40,19 +40,17 @@ with DAG(
      )
     
     
-    train_task = SparkSubmitOperator(
-        application=f"{base_dir}train.py"\
-        , task_id="train_task"\
-        , application_args = ['--train-in', f'{base_dir}Tingol-2_train_out_local', '--sklearn-model-out', f'{base_dir}6.joblib']\
-        ,spark_binary="/usr/bin/spark-submit"\
-        ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
+    train_task = BashOperator(
+        task_id='train_task',
+        bash_command=f'{"/opt/conda/envs/dsenv/bin/python"} {os.path.join(base_dir, "train.py")} --train-in {os.path.join(base_dir, "Tingol-2_train_out_local")} --sklearn-model-out {os.path.join(base_dir, "6.joblib")}',
+        #bash_command=f'python {base_dir}train.py --train-in {base_dir}Tingol-2_train_out_local --sklearn-model-out {base_dir}6.joblib',
     )
     
     model_sensor = FileSensor( task_id= "model_sensor", filepath= f'{base_dir}6.joblib' )
     
     feature_eng_task_test = SparkSubmitOperator(
         application=f"{base_dir}preprocess.py"\
-        , task_id="feature_eng_task_test"\
+        , task_id="feature_eng_test_task"\
         , application_args = ['--path-in', '/datasets/amazon/all_reviews_5_core_test_extra_small_features.json', '--path-out', 'Tingol-2_test_out']\
         ,spark_binary="/usr/bin/spark-submit"\
         ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
