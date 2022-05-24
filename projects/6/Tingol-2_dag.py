@@ -59,7 +59,7 @@ with DAG(
     predict_task = SparkSubmitOperator(
         application=os.path.join(base_dir, "predict.py")\
         , task_id="predict_task"\
-        , application_args = ['--train-in', 'Tingol-2_test_out', '--pred-out', 'Tingol-2_hw6_prediction', '--sklearn-model-in', f'{base_dir}6.joblib']\
+        , application_args = ['--train-in', 'Tingol-2_test_out', '--pred-out', 'Tingol-2_hw6_prediction', '--sklearn-model-in', f'{os.path.join(base_dir, "6.joblib")}']\
         ,spark_binary="/usr/bin/spark-submit"\
         ,env_vars={"PYSPARK_PYTHON": '/opt/conda/envs/dsenv/bin/python'}
     ) 
