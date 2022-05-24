@@ -35,9 +35,9 @@ with DAG(
     )
     
     train_download_task = BashOperator(
-                            task_id='train_download_task',
-                            bash_command=f"hdfs dfs -getmerge Tingol-2_train_out {os.path.join(base_dir, 'Tingol-2_train_out_local')}
-     )
+        task_id='download_train_task',
+        bash_command=f"hdfs dfs -getmerge Tingol-2_train_out {os.path.join(base_dir, 'Tingol-2_train_out_local')}"#{base_dir}Tingol-2_train_out_local",
+    )
     
     
     train_task = BashOperator(
