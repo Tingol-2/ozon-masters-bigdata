@@ -1,45 +1,40 @@
 
 import os, sys
-from pyspark.sql import SparkSession
-from pyspark.sql.types import *
-from pyspark import SparkConf
-
-SPARK_HOME = "/usr/hdp/current/spark2-client"
-PYSPARK_PYTHON = "/opt/conda/envs/dsenv/bin/python"
-os.environ["PYSPARK_PYTHON"]= PYSPARK_PYTHON
-os.environ["SPARK_HOME"] = SPARK_HOME
-
-PYSPARK_HOME = os.path.join(SPARK_HOME, "python/lib")
-sys.path.insert(0, os.path.join(PYSPARK_HOME, "py4j-0.10.9.3-src.zip"))
-sys.path.insert(0, os.path.join(PYSPARK_HOME, "pyspark.zip"))
-
-conf = SparkConf()
-spark = SparkSession.builder.config(conf=conf).appName("Spark SQL").getOrCreate()
 
 from sklearn.ensemble import GradientBoostingClassifier
-from pyspark.ml.functions import vector_to_array
 import pandas as pd
 from joblib import dump
+
 
 def main():
             path_in = sys.argv[2] 
             path_out = sys.argv[4] 
+            dataset = pd.read_json(path_in, lines=True)
 
-            dataset = spark.read.json(path_in)
+            all_features = []
+            for r in dataset['features']:
+                l = []
+                if len(r['values']) == 100:
+                    all_features.append(r['values'])
+                else:
+                    for i in range(100):
+                        if i in r['indices']:
+                            l.append(r['values'][r['indices'].index(i)])
+                        else:
+                            l.append(0)
+                    all_features.append(l)
 
-            features = (dataset.withColumn("f", vector_to_array("features"))
-                        .select(['id'] + [col("f")[i] for i in range(100)])).toPandas()
+            df = pd.DataFrame(all_features)
 
-            target = dataset.select('label').toPandas()
+            target = dataset['label']
 
-            feats = list(features.columns)[1:]
+            #feats = list(features.columns)[1:]
 
             model = GradientBoostingClassifier()
-            model.fit(features[feats], target['label'])
+            model.fit(df, target)
 
             dump(model, path_out)
 
 if __name__ == "__main__":
     main()
 
-spark.stop()
