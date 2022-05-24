@@ -4,7 +4,6 @@ import pandas as pd
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark import SparkConf
-from pyspark.sq.functions 
 import pyspark.sql.functions as F
 from pyspark.ml.functions import vector_to_array
 from pyspark.sql.types import StructType, StructField, DoubleType, StringType, BooleanType, TimestampType, FloatType
