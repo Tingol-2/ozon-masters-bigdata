@@ -62,6 +62,7 @@ dataset = spark.read.json(path_in, schema=schema)
 
 predicts = dataset.withColumn('prediction', predict(vector_to_array('features')))
 
-predicts.select("id", "prediction").write.mode('overwrite').save(path_out, header='false', format='csv' )
+#predicts.select("id", "prediction").write.mode('overwrite').save(path_out, header='false', format='csv' )
+predicts.select("id", "prediction").write.mode('overwrite').csv(path_out, header='false')
 
 spark.stop()
